@@ -1,0 +1,31 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin — RELLZ STORE</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1220;color:#edf4ff;font-family:system-ui,Arial,sans-serif}.wrap{max-width:1000px;margin:auto;padding:22px 14px 50px}
+h1{margin:0 0 5px}.muted{color:#9fb0c8}.card{background:#152238;border:1px solid #2b3c58;border-radius:16px;padding:16px;margin:14px 0}
+input,button{padding:12px;border-radius:10px;border:1px solid #405371;font-size:15px}input{background:#0b1729;color:white;width:100%;margin:7px 0}button{background:#67e8f9;color:#06202b;font-weight:800;cursor:pointer;margin:5px 4px 5px 0}button.secondary{background:#243750;color:#e7f2ff}button.danger{background:#7f1d1d;color:#fff}
+.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1}.hidden{display:none}.msg{padding:10px;background:#0b1729;border-radius:9px;margin-top:10px;white-space:pre-wrap}
+.order{border-top:1px solid #30425e;padding:14px 0}.order:first-child{border-top:0}.meta{font-size:13px;color:#afbdd2;line-height:1.6}.status{display:inline-block;padding:4px 8px;border-radius:99px;background:#253b55;font-size:12px;margin:5px 0}
+.actions{margin-top:8px}.actions button{font-size:13px;padding:9px}.empty{color:#9fb0c8;padding:20px 0}
+</style></head><body><div class="wrap">
+<h1>RELLZ STORE — ADMIN</h1><div class="muted">Kelola pesanan JASA JOKI KONTAK</div>
+<section id="login" class="card"><h2>Login Admin</h2><form id="loginForm"><label for="password">Password admin</label><input id="password" type="password" required autocomplete="current-password" placeholder="Masukkan password admin"><button>Masuk</button></form><div id="loginMsg" class="msg hidden"></div></section>
+<section id="dashboard" class="hidden">
+<div class="card"><div class="row"><div><b>Daftar pesanan</b><div class="muted">Status pembayaran disinkronkan dengan Midtrans.</div></div><div><button id="refresh">Muat ulang</button><button id="logout" class="secondary">Keluar</button></div></div><div id="dashMsg" class="msg hidden"></div></div>
+<div class="card"><div id="orders"><div class="empty">Memuat pesanan...</div></div></div>
+</section></div>
+<script>
+const loginBox=document.getElementById('login'),dash=document.getElementById('dashboard'),loginMsg=document.getElementById('loginMsg'),dashMsg=document.getElementById('dashMsg'),orders=document.getElementById('orders');
+function message(el,s){el.textContent=s;el.classList.remove('hidden')}
+async function api(path,opts={}){const r=await fetch(path,{...opts,headers:{'content-type':'application/json',...(opts.headers||{})}});const d=await r.json();if(!r.ok)throw new Error(d.error||'Permintaan gagal');return d}
+function showDash(){loginBox.classList.add('hidden');dash.classList.remove('hidden');loadOrders()}
+function rupiah(n){return 'Rp'+Number(n||0).toLocaleString('id-ID')}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+async function loadOrders(){orders.innerHTML='<div class="empty">Memuat pesanan...</div>';try{const d=await api('/api/admin/orders');if(!d.orders.length){orders.innerHTML='<div class="empty">Belum ada pesanan.</div>';return}
+orders.innerHTML=d.orders.map(o=>`<article class="order"><b>${esc(o.customer_name)}</b> — ${esc(o.order_id)}<div class="meta">WhatsApp: ${esc(o.customer_phone)}<br>Layanan: ${esc(o.service_name)}<br>Nominal: ${rupiah(o.amount)}<br>Dibuat: ${esc(o.created_at)}<br>Detail: ${esc(o.detail)}<br>Pembayaran: <span class="status">${esc(o.payment_status)}</span> • Pengerjaan: <span class="status">${esc(o.fulfillment_status)}</span></div><div class="actions">${o.payment_status==='paid' && o.fulfillment_status!=='processing'?`<button data-id="${esc(o.order_id)}" data-state="processing">Mulai proses</button>`:''}${o.payment_status==='paid' && o.fulfillment_status!=='completed'?`<button data-id="${esc(o.order_id)}" data-state="completed">Tandai selesai</button>`:''}<a target="_blank" rel="noopener" href="https://wa.me/${esc(o.customer_phone.replace(/\D/g,'').replace(/^0/,'62'))}"><button class="secondary">WhatsApp pelanggan</button></a></div></article>`).join('');
+orders.querySelectorAll('button[data-id]').forEach(b=>b.addEventListener('click',async()=>{b.disabled=true;try{await api('/api/admin/fulfillment',{method:'POST',body:JSON.stringify({order_id:b.dataset.id,status:b.dataset.state})});await loadOrders()}catch(e){message(dashMsg,e.message);b.disabled=false}}));
+}catch(e){message(dashMsg,e.message);orders.innerHTML=''}}
+document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();try{await api('/api/admin/login',{method:'POST',body:JSON.stringify({password:document.getElementById('password').value})});showDash()}catch(err){message(loginMsg,err.message)}});
+document.getElementById('refresh').onclick=loadOrders;
+document.getElementById('logout').onclick=async()=>{try{await api('/api/admin/logout',{method:'POST',body:'{}'})}finally{dash.classList.add('hidden');loginBox.classList.remove('hidden');document.getElementById('password').value=''}};
+(async()=>{try{await api('/api/admin/me');showDash()}catch(e){}})();
+</script></body></html>
