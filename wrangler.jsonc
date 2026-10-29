@@ -3,7 +3,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "rellz-store",
   "main": "src/index.js",
-  "compatibility_date": "2026-10-30",
+  "compatibility_date": "2026-10-29",
   "assets": {
     "directory": "./public",
     "binding": "ASSETS",
