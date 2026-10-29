@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b1220">
+<title>RELLZ STORE — JASA JOKI KONTAK</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1220;color:#edf4ff;font-family:system-ui,Arial,sans-serif}
+main{max-width:560px;margin:auto;padding:24px 16px 42px}.brand{color:#67e8f9;font-size:12px;font-weight:800;letter-spacing:2px}
+h1{font-size:30px;margin:8px 0 5px}.sub{color:#aab8ce;line-height:1.55}.panel{margin-top:20px;padding:20px;background:#152238;border:1px solid #2b3c58;border-radius:20px}
+.pill{display:inline-block;color:#a5f3fc;background:#12364a;padding:6px 10px;border-radius:99px;font-size:12px;font-weight:700}
+h2{font-size:19px;margin:14px 0 6px}.price{font-size:25px;font-weight:800;color:#67e8f9;margin:10px 0 16px}
+label{display:block;font-size:14px;margin:14px 0 7px}input,textarea,select{width:100%;padding:14px;border:1px solid #405371;background:#0b1729;color:white;border-radius:12px;font-size:16px}
+select{width:100%;padding:14px;border:1px solid #405371;background:#0b1729;color:white;border-radius:12px;font-size:16px}textarea{min-height:82px;resize:vertical}button,.wa{display:block;width:100%;text-align:center;border:0;border-radius:12px;padding:15px;margin-top:16px;background:#67e8f9;color:#06202b;font-weight:800;font-size:16px;text-decoration:none;cursor:pointer}
+button:disabled{opacity:.55}.wa{background:#1d9c68;color:white;margin-top:10px}.note{font-size:12px;color:#9fb0c8;line-height:1.55}.status{display:none;margin-top:14px;padding:13px;background:#0b1729;border-radius:12px;line-height:1.5;overflow-wrap:anywhere}
+footer{text-align:center;color:#7487a5;font-size:12px;margin-top:24px}
+</style>
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="CLIENT_KEY"></script></head>
+<body><main><div class="brand">RELLZ STORE • PEMBAYARAN QRIS</div><h1>RELLZ STORE</h1>
+<p class="sub">Pesan layanan <b>JASA JOKI KONTAK</b> dengan pembayaran QRIS.</p>
+<section class="panel"><span class="pill">LAYANAN TERSEDIA</span><h2>JASA JOKI KONTAK</h2>
+<p class="sub">Isi detail kebutuhanmu. Admin akan menghubungi setelah pembayaran terverifikasi.</p>
+<div class="price" id="price">Rp2.000</div>
+<form id="order">
+<label for="days">Pilih durasi joki kontak</label><select id="days" required><option value="1">1 hari — Rp2.000</option><option value="2">2 hari — Rp4.000</option><option value="3">3 hari — Rp6.000</option><option value="4">4 hari — Rp8.000</option><option value="5">5 hari — Rp10.000</option></select>
+<label for="name">Nama pelanggan</label><input id="name" maxlength="60" required placeholder="Nama kamu">
+<label for="phone">Nomor WhatsApp pelanggan</label><input id="phone" inputmode="tel" maxlength="20" required placeholder="08xxxxxxxxxx">
+<label for="detail">Detail permintaan</label><textarea id="detail" maxlength="500" required placeholder="Jelaskan kebutuhan joki kontak kamu"></textarea>
+<button id="pay" type="submit">Lanjut bayar dengan QRIS</button></form>
+<div id="status" class="status" role="status"></div>
+<a class="wa" href="https://wa.me/628818375778" target="_blank" rel="noopener">Hubungi Admin WhatsApp</a>
+<p class="note">Pesanan diproses setelah pembayaran diverifikasi. Jangan pernah kirim OTP, kata sandi, atau data rahasia.</p></section>
+<footer>RELLZ STORE • Pembayaran diproses oleh Midtrans</footer></main>
+<script>
+const form=document.getElementById('order'),btn=document.getElementById('pay'),box=document.getElementById('status');
+function show(s){box.style.display='block';box.textContent=s}
+const prices={1:2000,2:4000,3:6000,4:8000,5:10000};
+const days=document.getElementById('days'),price=document.getElementById('price');
+days.addEventListener('change',()=>{price.textContent='Rp'+prices[days.value].toLocaleString('id-ID')});
+async function poll(id){for(let i=0;i<75;i++){await new Promise(r=>setTimeout(r,5000));try{const r=await fetch('/api/status?order_id='+encodeURIComponent(id));const d=await r.json();if(d.status==='paid'){show('Pembayaran berhasil diverifikasi! ID pesanan: '+id+'. Admin akan menghubungi kamu.');return}if(['failed','expired','cancelled'].includes(d.status)){show('Pembayaran '+d.status+'. Hubungi admin jika perlu bantuan.');return}show('Menunggu pembayaran QRIS... ID: '+id)}catch(e){show('Memeriksa status pembayaran...')}}show('Pemeriksaan otomatis berhenti. Hubungi admin dan kirim ID: '+id)}
+form.addEventListener('submit',async e=>{e.preventDefault();btn.disabled=true;show('Membuat tagihan QRIS...');try{const payload={name:document.getElementById('name').value.trim(),phone:document.getElementById('phone').value.trim(),detail:document.getElementById('detail').value.trim(),days:Number(days.value)};const r=await fetch('/api/create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const d=await r.json();if(!r.ok)throw new Error(d.error||'Gagal membuat tagihan');show('Tagihan dibuat. Selesaikan pembayaran melalui jendela Midtrans.');window.snap.pay(d.token,{onSuccess:()=>show('Pembayaran diterima, sedang diverifikasi...'),onPending:()=>show('Menunggu pembayaran QRIS...'),onError:()=>show('Pembayaran gagal.'),onClose:()=>show('Jendela pembayaran ditutup. Status tetap diperiksa.')});poll(d.order_id)}catch(err){show(err.message);btn.disabled=false}});
+</script></body></html>
