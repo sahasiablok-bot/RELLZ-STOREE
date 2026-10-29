@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RELLZ STORE</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #10121b;
+      color: white;
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+    }
+    h1 { color: #7c83ff; text-align: center; }
+    .card {
+      background: #202333;
+      padding: 16px;
+      border-radius: 12px;
+      margin: 12px 0;
+    }
+    select, input, button {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 0;
+    }
+    button {
+      background: #7c83ff;
+      color: white;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>RELLZ STORE</h1>
+  <div class="card">
+    <h2>JASA JOKI KONTAK</h2>
+    <label>Pilih durasi:</label>
+    <select id="durasi" onchange="hitung()">
+      <option value="2000">1 Hari - Rp2.000</option>
+      <option value="4000">2 Hari - Rp4.000</option>
+      <option value="6000">3 Hari - Rp6.000</option>
+      <option value="8000">4 Hari - Rp8.000</option>
+      <option value="10000">5 Hari - Rp10.000</option>
+    </select>
+    <p>Total: <b id="harga">Rp2.000</b></p>
+    <input id="nama" placeholder="Nama kamu">
+    <textarea id="detail" placeholder="Detail pesanan" style="width:100%;box-sizing:border-box;margin-top:10px;padding:12px"></textarea>
+    <button onclick="pesan()">Pesan via WhatsApp</button>
+  </div>
+  <script>
+    function hitung() {
+      const harga = Number(document.getElementById('durasi').value);
+      document.getElementById('harga').textContent =
+        'Rp' + harga.toLocaleString('id-ID');
+    }
+    function pesan() {
+      const nama = document.getElementById('nama').value;
+      const detail = document.getElementById('detail').value;
+      const durasi = document.getElementById('durasi');
+      const harga = Number(durasi.value);
+      const teks = `Halo RELLZ STORE, saya ingin pesan Jasa Joki Kontak.%0ANama: ${encodeURIComponent(nama)}%0ADurasi: ${encodeURIComponent(durasi.options[durasi.selectedIndex].text)}%0ADetail: ${encodeURIComponent(detail)}%0ATotal: ${encodeURIComponent('Rp' + harga.toLocaleString('id-ID'))}`;
+      window.open('https://wa.me/628818375778?text=' + teks, '_blank');
+    }
+  </script>
+</body>
+</html>
