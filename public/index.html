@@ -1,39 +1,133 @@
-<!doctype html>
-<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b1220">
-<title>RELLZ STORE — JASA JOKI KONTAK</title>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RELLZ STORE</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#0b1220;color:#edf4ff;font-family:system-ui,Arial,sans-serif}
-main{max-width:560px;margin:auto;padding:24px 16px 42px}.brand{color:#67e8f9;font-size:12px;font-weight:800;letter-spacing:2px}
-h1{font-size:30px;margin:8px 0 5px}.sub{color:#aab8ce;line-height:1.55}.panel{margin-top:20px;padding:20px;background:#152238;border:1px solid #2b3c58;border-radius:20px}
-.pill{display:inline-block;color:#a5f3fc;background:#12364a;padding:6px 10px;border-radius:99px;font-size:12px;font-weight:700}
-h2{font-size:19px;margin:14px 0 6px}.price{font-size:25px;font-weight:800;color:#67e8f9;margin:10px 0 16px}
-label{display:block;font-size:14px;margin:14px 0 7px}input,textarea,select{width:100%;padding:14px;border:1px solid #405371;background:#0b1729;color:white;border-radius:12px;font-size:16px}
-select{width:100%;padding:14px;border:1px solid #405371;background:#0b1729;color:white;border-radius:12px;font-size:16px}textarea{min-height:82px;resize:vertical}button,.wa{display:block;width:100%;text-align:center;border:0;border-radius:12px;padding:15px;margin-top:16px;background:#67e8f9;color:#06202b;font-weight:800;font-size:16px;text-decoration:none;cursor:pointer}
-button:disabled{opacity:.55}.wa{background:#1d9c68;color:white;margin-top:10px}.note{font-size:12px;color:#9fb0c8;line-height:1.55}.status{display:none;margin-top:14px;padding:13px;background:#0b1729;border-radius:12px;line-height:1.5;overflow-wrap:anywhere}
-footer{text-align:center;color:#7487a5;font-size:12px;margin-top:24px}
+*{box-sizing:border-box}
+body{margin:0;background:#0b1220;color:white;font-family:Arial,sans-serif}
+main{max-width:550px;margin:auto;padding:22px 16px}
+h1{color:#67e8f9;text-align:center}
+.panel{background:#152238;padding:20px;border-radius:18px;margin-top:18px}
+label{display:block;margin-top:14px;margin-bottom:7px}
+input,select,textarea{width:100%;padding:13px;border-radius:10px;border:1px solid #405371;background:#0b1729;color:white;font-size:16px}
+button{width:100%;padding:15px;border:0;border-radius:10px;background:#67e8f9;color:#06202b;font-weight:bold;font-size:16px;margin-top:18px}
+.price{font-size:25px;color:#67e8f9;font-weight:bold}
+.promo{white-space:pre-wrap;background:#0b1729;padding:13px;border-radius:10px;line-height:1.6}
+.note{font-size:12px;color:#aab8ce;line-height:1.6}
 </style>
-<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="CLIENT_KEY"></script></head>
-<body><main><div class="brand">RELLZ STORE • PEMBAYARAN QRIS</div><h1>RELLZ STORE</h1>
-<p class="sub">Pesan layanan <b>JASA JOKI KONTAK</b> dengan pembayaran QRIS.</p>
-<section class="panel"><span class="pill">LAYANAN TERSEDIA</span><h2>JASA JOKI KONTAK</h2>
-<p class="sub">Isi detail kebutuhanmu. Admin akan menghubungi setelah pembayaran terverifikasi.</p>
+</head>
+<body>
+<main>
+<h1>RELLZ STORE</h1>
+<p style="text-align:center;color:#aab8ce">JASA JOKI KONTAK</p>
+
+<section class="panel">
+<h3>DAFTAR HARGA</h3>
+<p>1 Hari — Rp2.000</p>
+<p>2 Hari — Rp4.000</p>
+<p>3 Hari — Rp6.000</p>
+<p>4 Hari — Rp8.000</p>
+<p>5 Hari — Rp10.000</p>
+
 <div class="price" id="price">Rp2.000</div>
+
 <form id="order">
-<label for="days">Pilih durasi joki kontak</label><select id="days" required><option value="1">1 hari — Rp2.000</option><option value="2">2 hari — Rp4.000</option><option value="3">3 hari — Rp6.000</option><option value="4">4 hari — Rp8.000</option><option value="5">5 hari — Rp10.000</option></select>
-<label for="name">Nama pelanggan</label><input id="name" maxlength="60" required placeholder="Nama kamu">
-<label for="phone">Nomor WhatsApp pelanggan</label><input id="phone" inputmode="tel" maxlength="20" required placeholder="08xxxxxxxxxx">
-<label for="detail">Detail permintaan</label><textarea id="detail" maxlength="500" required placeholder="Jelaskan kebutuhan joki kontak kamu"></textarea>
-<button id="pay" type="submit">Lanjut bayar dengan QRIS</button></form>
-<div id="status" class="status" role="status"></div>
-<a class="wa" href="https://wa.me/628818375778" target="_blank" rel="noopener">Hubungi Admin WhatsApp</a>
-<p class="note">Pesanan diproses setelah pembayaran diverifikasi. Jangan pernah kirim OTP, kata sandi, atau data rahasia.</p></section>
-<footer>RELLZ STORE • Pembayaran diproses oleh Midtrans</footer></main>
+<label>Nama buyer</label>
+<input id="nama" required placeholder="Masukkan nama">
+
+<label>Nomor WhatsApp buyer</label>
+<input id="nomor" required inputmode="tel" placeholder="08xxxxxxxxxx">
+
+<label>Pilih paket</label>
+<select id="paket">
+<option value="1">1 Hari</option>
+<option value="2">2 Hari</option>
+<option value="3">3 Hari</option>
+<option value="4">4 Hari</option>
+<option value="5">5 Hari</option>
+</select>
+
+<label>Detail pesanan</label>
+<textarea id="detail" placeholder="Tulis kebutuhan kamu"></textarea>
+
+<label>Tanggal transfer</label>
+<input type="date" id="tanggal" required>
+
+<label>Jam transfer</label>
+<input type="time" id="jam" required>
+
+<label>Screenshot bukti transfer</label>
+<input type="file" id="bukti" accept="image/*" required>
+
+<p class="note">QRIS NexaPay akan ditampilkan di sini setelah gambar QRIS ditambahkan ke GitHub.</p>
+<img src="/qris-nexapay.jpg" alt="QRIS NexaPay" style="width:100%;max-width:280px;display:block;margin:15px auto;border-radius:12px" onerror="this.style.display='none'">
+
+<button type="submit">KONFIRMASI PESANAN</button>
+</form>
+
+<p class="note">Setelah WhatsApp terbuka, lampirkan screenshot bukti transfer secara manual jika gambar belum ikut terkirim. Admin akan memeriksa pembayaran secara manual.</p>
+
+<h3>TEKS PROMOSI</h3>
+<div class="promo">*SAVE FRESH BUYYER RELLZ ✅*
+SV : 
+wa.me/628
+
+*SAVE NAMBAH KONTAK + SELLER + BUYYER & VIEW🔥💥*</div>
+</section>
+</main>
+
 <script>
-const form=document.getElementById('order'),btn=document.getElementById('pay'),box=document.getElementById('status');
-function show(s){box.style.display='block';box.textContent=s}
-const prices={1:2000,2:4000,3:6000,4:8000,5:10000};
-const days=document.getElementById('days'),price=document.getElementById('price');
-days.addEventListener('change',()=>{price.textContent='Rp'+prices[days.value].toLocaleString('id-ID')});
-async function poll(id){for(let i=0;i<75;i++){await new Promise(r=>setTimeout(r,5000));try{const r=await fetch('/api/status?order_id='+encodeURIComponent(id));const d=await r.json();if(d.status==='paid'){show('Pembayaran berhasil diverifikasi! ID pesanan: '+id+'. Admin akan menghubungi kamu.');return}if(['failed','expired','cancelled'].includes(d.status)){show('Pembayaran '+d.status+'. Hubungi admin jika perlu bantuan.');return}show('Menunggu pembayaran QRIS... ID: '+id)}catch(e){show('Memeriksa status pembayaran...')}}show('Pemeriksaan otomatis berhenti. Hubungi admin dan kirim ID: '+id)}
-form.addEventListener('submit',async e=>{e.preventDefault();btn.disabled=true;show('Membuat tagihan QRIS...');try{const payload={name:document.getElementById('name').value.trim(),phone:document.getElementById('phone').value.trim(),detail:document.getElementById('detail').value.trim(),days:Number(days.value)};const r=await fetch('/api/create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const d=await r.json();if(!r.ok)throw new Error(d.error||'Gagal membuat tagihan');show('Tagihan dibuat. Selesaikan pembayaran melalui jendela Midtrans.');window.snap.pay(d.token,{onSuccess:()=>show('Pembayaran diterima, sedang diverifikasi...'),onPending:()=>show('Menunggu pembayaran QRIS...'),onError:()=>show('Pembayaran gagal.'),onClose:()=>show('Jendela pembayaran ditutup. Status tetap diperiksa.')});poll(d.order_id)}catch(err){show(err.message);btn.disabled=false}});
-</script></body></html>
+const harga={1:2000,2:4000,3:6000,4:8000,5:10000};
+const paket=document.getElementById('paket');
+
+paket.addEventListener('change',()=>{
+ document.getElementById('price').textContent=
+ 'Rp'+harga[paket.value].toLocaleString('id-ID');
+});
+
+document.getElementById('order').addEventListener('submit',async function(e){
+ e.preventDefault();
+
+ const file=document.getElementById('bukti').files[0];
+ if(!file){alert('Pilih screenshot bukti transfer dahulu');return;}
+
+ const nama=document.getElementById('nama').value.trim();
+ const nomor=document.getElementById('nomor').value.trim();
+ const hari=paket.value;
+ const total=harga[hari];
+
+ const pesan=`*SAVE FRESH BUYYER RELLZ ✅*
+SV : 
+wa.me/628
+
+*SAVE NAMBAH KONTAK + SELLER + BUYYER & VIEW🔥💥*
+
+*NAMA BUYER:* ${nama}
+*NOMOR BUYER:* ${nomor}
+*PAKET:* ${hari} Hari
+*TOTAL:* Rp${total.toLocaleString('id-ID')}
+*TANGGAL TF:* ${document.getElementById('tanggal').value}
+*JAM TF:* ${document.getElementById('jam').value}
+*DETAIL:* ${document.getElementById('detail').value}
+
+Saya sudah melakukan transfer. Mohon cek pembayaran saya.`;
+
+ const wa='https://wa.me/628818375778?text='+encodeURIComponent(pesan);
+
+ if(navigator.canShare && navigator.canShare({files:[file]})){
+   try{
+     await navigator.share({files:[file],text:pesan});
+     return;
+   }catch(err){
+     if(err.name==='AbortError')return;
+   }
+ }
+
+ window.open(wa,'_blank');
+ alert('WhatsApp akan dibuka. Lampirkan screenshot bukti transfer secara manual, lalu tekan Kirim.');
+});
+</script>
+</body>
+</html>
